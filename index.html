@@ -1,0 +1,37 @@
+<script>
+        // URL de tu Google Apps Script conectada
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyn4fUH-FrS2xtmA3RKIZTVYUZ6JIFaCoBz3vbMRLogWccO49X-IGVKpbTAbMZD4Apzxw/exec';
+
+        const form = document.getElementById('reporteForm');
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('btnEnviar');
+            btn.disabled = true;
+            btn.innerText = 'Enviando reporte...';
+
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                correo: document.getElementById('correo').value,
+                telefono: document.getElementById('telefono').value,
+                tipo: document.getElementById('tipo').value,
+                ubicacion: document.getElementById('ubicacion').value,
+                descripcion: document.getElementById('descripcion').value
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                form.style.display = 'none';
+                document.getElementById('mensaje-exito').style.display = 'block';
+            })
+            .catch(error => {
+                alert('Ocurrió un error al enviar el reporte. Por favor intenta de nuevo.');
+                btn.disabled = false;
+                btn.innerText = 'ENVIAR REPORTE CIUDADANO';
+            });
+        });
+    </script>
