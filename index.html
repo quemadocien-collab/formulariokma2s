@@ -1,37 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMA2'S CIEN% - Reporte Ciudadano</title>
+    <style>
+        :root {
+            --primary: #D4AF37;
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #ffffff;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-top: 5px solid var(--primary);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-top: 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+            color: var(--primary);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #2a2a2a;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #f1c40f;
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #mensaje-exito {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #1b3a20;
+            border: 1px solid #2e7d32;
+            border-radius: 4px;
+            color: #a5d6a7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>KMA2'S CIEN%</h2>
+    <p class="subtitle">Iniciativa Ciudadana de Reporte</p>
+
+    <div id="mensaje-exito">
+        <h3>¡Reporte Registrado!</h3>
+        <p>Tu información ha sido ingresada de manera segura al sistema.</p>
+    </div>
+
+    <form id="reporteForm">
+        <div class="form-group">
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" required placeholder="Tu nombre">
+        </div>
+
+        <div class="form-group">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" required placeholder="correo@ejemplo.com">
+        </div>
+
+        <div class="form-group">
+            <label for="telefono">Teléfono de contacto</label>
+            <input type="tel" id="telefono" required placeholder="10 dígitos">
+        </div>
+
+        <div class="form-group">
+            <label for="tipo">Tipo de reporte</label>
+            <select id="tipo" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Servicio Público">Servicio Público</option>
+                <option value="Seguridad">Seguridad</option>
+                <option value="Infraestructura">Infraestructura</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="ubicacion">Ubicación / Dirección</label>
+            <input type="text" id="ubicacion" required placeholder="Calle, colonia o referencia">
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción del reporte</label>
+            <textarea id="descripcion" rows="4" required placeholder="Detalla la situación..."></textarea>
+        </div>
+
+        <button type="submit" id="btnEnviar">ENVIAR REPORTE CIUDADANO</button>
+    </form>
+</div>
+
 <script>
-        // URL de tu Google Apps Script conectada
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyn4fUH-FrS2xtmA3RKIZTVYUZ6JIFaCoBz3vbMRLogWccO49X-IGVKpbTAbMZD4Apzxw/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyn4fUH-FrS2xtmA3RKIZTVYUZ6JIFaCoBz3vbMRLogWccO49X-IGVKpbTAbMZD4Apzxw/exec';
 
-        const form = document.getElementById('reporteForm');
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const btn = document.getElementById('btnEnviar');
-            btn.disabled = true;
-            btn.innerText = 'Enviando reporte...';
+    const form = document.getElementById('reporteForm');
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('btnEnviar');
+        btn.disabled = true;
+        btn.innerText = 'Enviando reporte...';
 
-            const data = {
-                nombre: document.getElementById('nombre').value,
-                correo: document.getElementById('correo').value,
-                telefono: document.getElementById('telefono').value,
-                tipo: document.getElementById('tipo').value,
-                ubicacion: document.getElementById('ubicacion').value,
-                descripcion: document.getElementById('descripcion').value
-            };
+        const data = {
+            nombre: document.getElementById('nombre').value,
+            correo: document.getElementById('correo').value,
+            telefono: document.getElementById('telefono').value,
+            tipo: document.getElementById('tipo').value,
+            ubicacion: document.getElementById('ubicacion').value,
+            descripcion: document.getElementById('descripcion').value
+        };
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                form.style.display = 'none';
-                document.getElementById('mensaje-exito').style.display = 'block';
-            })
-            .catch(error => {
-                alert('Ocurrió un error al enviar el reporte. Por favor intenta de nuevo.');
-                btn.disabled = false;
-                btn.innerText = 'ENVIAR REPORTE CIUDADANO';
-            });
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(() => {
+            form.style.display = 'none';
+            document.getElementById('mensaje-exito').style.display = 'block';
+        })
+        .catch(error => {
+            alert('Ocurrió un error al enviar el reporte. Por favor intenta de nuevo.');
+            btn.disabled = false;
+            btn.innerText = 'ENVIAR REPORTE CIUDADANO';
         });
-    </script>
+    });
+</script>
+
+</body>
+</html>
