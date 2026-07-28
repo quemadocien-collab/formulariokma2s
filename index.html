@@ -1,37 +1,90 @@
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyn4fUH-FrS2xtmA3RKIZTVYUZ6JIFaCoBz3vbMRLogWccO49X-IGVKpbTAbMZD4Apzxw/exec';
-const form = document.querySelector('form');
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KMA2'S CIEN% - Formulario de Reporte</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+    form { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+    button { width: 100%; margin-top: 15px; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
 
-form.addEventListener('submit', e => {
-  e.preventDefault();
+  <h2>KMA2'S CIEN%</h2>
+  <p>Iniciativa Ciudadana de Reporte</p>
 
-  // Asegúrate de que los atributos 'name' o los IDs coincidan con los de tu HTML
-  const payload = {
-    nombre: form.querySelector('[name="nombre"]').value,
-    correo: form.querySelector('[name="correo"]').value,
-    telefono: form.querySelector('[name="telefono"]').value,
-    tipo: form.querySelector('[name="tipo"]').value,
-    ubicacion: form.querySelector('[name="ubicacion"]').value,
-    descripcion: form.querySelector('[name="descripcion"]').value
-  };
+  <form id="reportForm">
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" required placeholder="Tu nombre completo">
 
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8' // Importante para evitar bloqueos por CORS
-    },
-    body: JSON.stringify(payload)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.result === 'success') {
-      alert('¡Reporte registrado con éxito!\nTu Folio es: ' + data.folio);
-      form.reset();
-    } else {
-      alert('Error al registrar el reporte: ' + data.message);
-    }
-  })
-  .catch(error => {
-    console.error('Error!', error);
-    alert('Ocurrió un problema al enviar la información.');
-  });
-});
+    <label for="correo">Correo Electrónico:</label>
+    <input type="email" name="correo" required placeholder="ejemplo@correo.com">
+
+    <label for="telefono">Teléfono:</label>
+    <input type="tel" name="telefono" required placeholder="10 dígitos">
+
+    <label for="tipo">Tipo de Reporte:</label>
+    <select name="tipo" required>
+      <option value="">Selecciona una opción</option>
+      <option value="Servicio Público">Servicio Público</option>
+      <option value="Infraestructura">Infraestructura</option>
+      <option value="Seguridad">Seguridad</option>
+      <option value="Otro">Otro</option>
+    </select>
+
+    <label for="ubicacion">Ubicación:</label>
+    <input type="text" name="ubicacion" required placeholder="Colonia, calle o referencia">
+
+    <label for="descripcion">Descripción:</label>
+    <textarea name="descripcion" rows="4" required placeholder="Detalla el reporte aquí..."></textarea>
+
+    <button type="submit">Enviar Reporte</button>
+  </form>
+
+  <!-- AQUÍ VA EL CÓDIGO JAVASCRIPT ENCRIPTADO DENTRO DE <script> -->
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyn4fUH-FrS2xtmA3RKIZTVYUZ6JIFaCoBz3vbMRLogWccO49X-IGVKpbTAbMZD4Apzxw/exec';
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const payload = {
+        nombre: form.querySelector('[name="nombre"]').value,
+        correo: form.querySelector('[name="correo"]').value,
+        telefono: form.querySelector('[name="telefono"]').value,
+        tipo: form.querySelector('[name="tipo"]').value,
+        ubicacion: form.querySelector('[name="ubicacion"]').value,
+        descripcion: form.querySelector('[name="descripcion"]').value
+      };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.result === 'success') {
+          alert('¡Reporte registrado con éxito!\nTu Folio es: ' + data.folio);
+          form.reset();
+        } else {
+          alert('Error al registrar el reporte: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error!', error);
+        alert('Ocurrió un problema al enviar la información.');
+      });
+    });
+  </script>
+
+</body>
+</html>
